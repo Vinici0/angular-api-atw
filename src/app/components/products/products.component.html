@@ -1,0 +1,80 @@
+<div class="container-1">
+  <h1>{{updateActive ? "Modificar Producto": "Nuevo Producto"}}</h1>
+  <form class="card-data" [formGroup]="productData">
+    <div class="input-container">
+      <input type="text" name="name" formControlName="name" placeholder="Nombre">
+      <sub class="error"[class.hidden]="messageError('name')">
+        Solo se admiten letras mayusculas, minusculas, números y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="description" formControlName="description" placeholder="Descripción">
+      <sub class="error"[class.hidden]="messageError('description')">
+        Solo se admiten letras mayusculas, minusculas, números y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="number" name="price" formControlName="price" placeholder="Precio">
+      <sub class="error"[class.hidden]="messageError('price')">
+        Solo se admiten números enteros y decimales positivos.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="date" name="caducity" formControlName="caducity" placeholder="Fecha de nacimiento">
+      <sub class="error"[class.hidden]="messageError('caducity')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <select name="categoryId" formControlName="categoryId">
+        <option value="">Selecciona la categoría</option>
+        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+      </select>
+      <sub class="error"[class.hidden]="messageError('categoryId')">
+        Selecciona el empleado
+      </sub>
+    </div>
+    <div class="input-container btn btn-save" [class.hidden]="updateActive"  (click)="saveProduct()">Crear</div>
+    <div class="input-container btn btn-update" [class.hidden]="!updateActive" (click)="updateProduct()">Actualizar</div>
+    <div class="input-container btn btn-cancel" (click)="resetForm()">Cancelar</div>
+    <sub class="error"[class.hidden]="errorSend === ''">
+      {{errorSend}}
+    </sub>
+  </form>
+  <h3 class="subtitle">Tarjetas Registradas</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Producto</th>
+          <th>Descripción</th>
+          <th>Caducidad</th>
+          <th>Precio</th>
+          <th>Categoría</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [class.hidden]="products.length > 0">
+          <td class="td-center" colspan="10">No hay registros todavía</td>
+        </tr>
+        <tr *ngFor="let product of products; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.caducity }}</td>
+          <td>$ {{ product.price }}</td>
+          <td>{{ searchCategory(product.categoryId)}}</td>
+          <td>
+            <div>
+              <button (click)="loadUpdate(product.id)">Editar</button>
+              <button (click)="deleteCard(product.id)">Borrar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,77 @@
+<div class="container-1">
+  <h1>{{updateActive ? "Modificar Empleado": "Nuevo Empleado"}}</h1>
+  <form class="card-data" [formGroup]="employeeData">
+    <div class="input-container">
+      <input type="text" name="dni" formControlName="dni" placeholder="Cédula">
+      <sub class="error"[class.hidden]="messageError('dni')">
+        Ingrese un número de cedúla válido. Solo se admiten 10 caracteres.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="name" formControlName="name" placeholder="Nombre">
+      <sub class="error"[class.hidden]="messageError('name')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="lastname" formControlName="lastname" placeholder="Apellido">
+      <sub class="error"[class.hidden]="messageError('lastname')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="address" formControlName="address" placeholder="Dirección">
+      <sub class="error"[class.hidden]="messageError('address')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="date" name="birthday" formControlName="birthday" placeholder="Fecha de nacimiento">
+      <sub class="error"[class.hidden]="messageError('birthday')">
+        Debes escribir una fecha de nacimiento.
+      </sub>
+    </div>
+    <div class="input-container btn btn-save" [class.hidden]="updateActive"  (click)="saveEmployee()">Crear</div>
+    <div class="input-container btn btn-update" [class.hidden]="!updateActive" (click)="updateEmployee()">Actualizar</div>
+    <div class="input-container btn btn-cancel" (click)="resetForm()">Cancelar</div>
+    <sub class="error"[class.hidden]="errorSend === ''">
+      {{errorSend}}
+    </sub>
+  </form>
+  <h3 class="subtitle">Empleados Registrados</h3>
+  <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>N°</th>
+        <th>Cédula</th>
+        <th>Nombres</th>
+        <th>Apellido</th>
+        <th>Dirección</th>
+        <th>F. Nacimiento</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr [class.hidden]="employees.length > 0">
+        <td class="td-center" colspan="6">No hay registros todavía</td>
+      </tr>
+      <tr *ngFor="let employee of employees; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ employee.dni }}</td>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.lastname }}</td>
+        <td>{{ employee.address }}</td>
+        <td>{{ employee.birthday }}</td>
+        <td>
+          <div>
+            <button (click)="loadUpdate(employee.id)">Editar</button>
+            <button (click)="deleteCard(employee.id)">Borrar</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+

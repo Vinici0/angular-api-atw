@@ -1,0 +1,100 @@
+<div class="container-1">
+  <h1>{{updateActive ? "Modificar Cliente": "Nuevo Cliente"}}</h1>
+  <form class="card-data" [formGroup]="cardData">
+    <div class="input-container">
+      <input type="text" name="dni" formControlName="dni" placeholder="Cédula">
+      <sub class="error"[class.hidden]="messageError('dni')">
+        Ingrese un número de cedúla válido. Solo se admiten 10 caracteres.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="name" formControlName="name" placeholder="Nombre">
+      <sub class="error"[class.hidden]="messageError('name')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="lastname" formControlName="lastname" placeholder="Apellido">
+      <sub class="error"[class.hidden]="messageError('lastname')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="text" name="address" formControlName="address" placeholder="Dirección">
+      <sub class="error"[class.hidden]="messageError('address')">
+        Solo se admiten letras mayusculas, minusculas y espacios. Asegurece de no tener espacios dobles y ni espacios al comienzo ni al final.
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="date" name="birthday" formControlName="birthday" placeholder="Fecha de nacimiento">
+      <sub class="error"[class.hidden]="messageError('birthday')">
+        Debes escribir una fecha de nacimiento.
+      </sub>
+    </div>
+    <div class="input-container">
+      <select name="employeeId" formControlName="employeeId">
+        <option value="">Selecciona el empleado</option>
+        <option *ngFor="let employee of employees" value="{{employee.id}}">{{employee.name}} {{employee.lastname}}</option>
+      </select>
+      <sub class="error"[class.hidden]="messageError('employeeId')">
+        Selecciona el empleado
+      </sub>
+    </div>
+    <div class="input-container">
+      <select name="roomId" formControlName="roomId">
+        <option value="">Selecciona el tipo de sala</option>
+        <option *ngFor="let room of rooms" value="{{room.id}}">{{room.name}}</option>
+      </select>
+      <sub class="error"[class.hidden]="messageError('roomId')">
+        Selecciona el tipo de sala.
+      </sub>
+    </div>
+    <div class="input-container btn btn-save" [class.hidden]="updateActive"  (click)="saveCard()">Crear</div>
+    <div class="input-container btn btn-update" [class.hidden]="!updateActive" (click)="updateCard()">Actualizar</div>
+    <div class="input-container btn btn-cancel" (click)="resetForm()">Cancelar</div>
+    <sub class="error"[class.hidden]="errorSend === ''">
+      {{errorSend}}
+    </sub>
+  </form>
+  <h3 class="subtitle">Tarjetas Registradas</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Tarjeta</th>
+          <th>Cédula</th>
+          <th>Nombres</th>
+          <th>Apellido</th>
+          <th>Dirección</th>
+          <th>F. Nacimiento</th>
+          <th>Empleado</th>
+          <th>Sala</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [class.hidden]="cards.length > 0">
+          <td class="td-center" colspan="10">No hay registros todavía</td>
+        </tr>
+        <tr *ngFor="let card of cards; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ card.cardNumber }}</td>
+          <td>{{ card.customer.dni }}</td>
+          <td>{{ card.customer.name }}</td>
+          <td>{{ card.customer.lastname }}</td>
+          <td>{{ card.customer.address }}</td>
+          <td>{{ card.customer.birthday }}</td>
+          <td>{{ searchEmployee(card.employeeId)}}</td>
+          <td>{{ searchRoom(card.roomId)}}</td>
+          <td>
+            <div>
+              <button (click)="loadUpdate(card.id)">Editar</button>
+              <button (click)="deleteCard(card.id)">Borrar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

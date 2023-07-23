@@ -1,0 +1,144 @@
+<div class="container-1">
+  <h1>Nuevo Consumo</h1>
+  <h3>Datos Generales</h3>
+  <form class="card-data form-mb" [formGroup]="userData">
+    <div class="input-container">
+      <strong>
+        <label>Tarjeta</label>
+      </strong>
+      <select name="cardNumber" formControlName="cardNumber" (change)="hadChanged($event)">
+        <option value="">Selecciona la tarjeta</option>
+        <option *ngFor="let card of cards" value="{{card.cardNumber}}">{{card.cardNumber}}</option>
+      </select>
+      <sub class="error"[class.hidden]="msgErrorUser('cardNumber')">
+        Selecciona el número de tarjeta
+      </sub>
+    </div>
+    <div class="input-container">
+      <strong>
+        <label>Cédula:</label>
+      </strong>
+      <div>{{selectedUser.dni}}</div>
+    </div>
+    <div class="input-container">
+      <strong>
+        <label>Cliente:</label>
+      </strong>
+      <div class="label">{{selectedUser.name}}</div>
+    </div>
+    <div class="input-container">
+      <strong>
+        <label>Empleado</label>
+      </strong>
+      <select name="employeeId" formControlName="employeeId">
+        <option value="">Selecciona el empleado</option>
+        <option *ngFor="let employee of employees" value="{{employee.id}}">{{employee.name}} {{employee.lastname}}</option>
+      </select>
+      <sub class="error"[class.hidden]="msgErrorUser('employeeId')">
+        Selecciona el empleado
+      </sub>
+    </div>
+  </form>
+  <h3>Añadir Producto</h3>
+  <form class="card-data" [formGroup]="detailData">
+    <div class="input-container">
+      <select name="categoryId" formControlName="categoryId" (change)="wasSelected($event)">
+        <option value="">Selecciona la categoría</option>
+        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+      </select>
+      <sub class="error"[class.hidden]="msgErrorDetail('categoryId')">
+        Selecciona la categoría
+      </sub>
+    </div>
+    <div class="input-container">
+      <select name="productId" formControlName="productId">
+        <option value="">Selecciona el producto</option>
+        <option *ngFor="let product of filterdProducts" value="{{product.id}}">{{product.name}}</option>
+      </select>
+      <sub class="error"[class.hidden]="msgErrorDetail('productId')">
+        Selecciona el producto
+      </sub>
+    </div>
+    <div class="input-container">
+      <input type="number" name="quantity" formControlName="quantity" placeholder="Cantidad">
+      <sub class="error"[class.hidden]="msgErrorDetail('quantity')">
+        Solo se admiten números enteros mayores a 0.
+      </sub>
+    </div>
+    <div class="input-container btn btn-save" (click)="addDetail()">Añadir</div>
+    <div class="input-container btn btn-cancel" (click)="resetForm('detail')">Cancelar</div>
+  </form>
+  <h3 class="subtitle">Consumo</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Codigo</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>P.Unitario</th>
+          <th>Importe</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [class.hidden]="details.length > 0">
+          <td class="td-center" colspan="10">No hay registros todavía</td>
+        </tr>
+        <tr *ngFor="let detail of details; let i = index" class="detail-row margin-bottom">
+          <td  class="centered">{{ i + 1 }}</td>
+          <td  class="centered">{{ detail.productId }}</td>
+          <td  class="centered">{{ detail.productName }}</td>
+          <td  class="centered">{{ detail.quantity }}</td>
+          <td  class="centered">$ {{ detail.price | number:'.2-2' }}</td>
+          <td  class="centered">$ {{ detail.subtotal | number:'.2-2' }}</td>
+          <td  class="centered">
+            <div class="btn-group">
+              <button (click)="updateQuantity(detail.productId)">Editar</button>
+              <button (click)="removeDetail(detail.productId)">Borrar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sale-data" [class.hidden]="details.length === 0">
+    <div class="sale-detail">
+      <div>
+        <strong>Subtotal:</strong>
+      </div>
+      <div>
+        <strong>{{subtotal | number:'.2-2'}}</strong>
+      </div>
+    </div>
+    <div class="sale-detail" [class.hidden]="recharge === 0">
+      <div>
+        <strong>Rec. Sala:</strong>
+      </div>
+      <div>
+        <strong>{{recharge | number:'.2-2'}}</strong>
+      </div>
+    </div>
+    <div class="sale-detail"  [class.hidden]="iva === 0">
+      <div>
+        <strong>I.V.A:</strong>
+      </div>
+      <div>
+        <strong>{{iva | number:'.2-2'}}</strong>
+      </div>
+    </div>
+    <div class="sale-detail">
+      <div>
+        <strong>Total:</strong>
+      </div>
+      <div>
+        <strong>{{subtotal + recharge + iva | number:'.2-2'}}</strong>
+      </div>
+    </div>
+    <div class="sale-detail">
+      <button (click)="sendData()">Facturar</button>
+    </div>
+  </div>
+</div>
+

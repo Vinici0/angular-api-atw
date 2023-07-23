@@ -1,0 +1,20 @@
+<div class="container mt-5" >
+  <div class="row row-cols-1 row-cols-md-5 g-4" >
+    <div class="col" *ngFor="let data of listaData">
+      <div class="card">
+        <img src="../../../assets/cerveza.png" class="card-img-top img-fluid" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">Cerveza</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{data.name}}</h6>
+          <p class="card-text">
+            {{data.brewery_type}}
+          </p>
+          <p class="card-text">
+            {{data.city}}
+          </p>
+          <a class="btn btn-primary" (click)="addDetail(data)">Agregar pedido</a>
+
+        </div>
+      </div>
+    </div>
+</div>
